@@ -3,84 +3,91 @@
  @param {number} x
  @param {number} y
  */
-function Particle(x, y) {
+class Particle {
 
-  this.pos = new p5.Vector(x, y);
-  this.vel = new p5.Vector(0, 0);
-  this.acc = new p5.Vector(0, 0);
-  this.target = new p5.Vector(0, 0);
-  this.isKilled = false;
+  PVector pos;
+  PVector vel = new PVector(0, 0);
+  PVector acc = new PVector(0, 0);
+  PVector target = new PVector(0, 0);
+  boolean isKilled = false;
 
-  this.maxSpeed = random(0.25, 2); // How fast it can move per frame.
-  this.maxForce = random(8, 15); // Its speed limit.
+  float maxSpeed = random(0.25, 2); // How fast it can move per frame.
+  float maxForce = random(8, 15); // Its speed limit.
 
-  this.currentColor = color(0);
-  this.endColor = color(0);
-  this.colorBlendRate = random(0.01, 0.05);
+  color currentColor = color(0);
+  color endColor = color(0);
+  float colorBlendRate = random(0.01, 0.05);
 
-  this.currentSize = 0;
+  float currentSize = 0;
 
   // Saving as class var so it doesn't need to calculate twice.
-  this.distToTarget = 0;
+  float distToTarget = 0;
 
-  this.move = function() {
+  Particle(float x, float y) {
+    this.pos = new PVector(x, y);
+  }
+
+  void move() {
     this.distToTarget = dist(this.pos.x, this.pos.y, this.target.x, this.target.y);
 
     // If it's close enough to its target, the slower it'll get
     // so that it can settle.
+    float proximityMult;
     if (this.distToTarget < closeEnoughTarget) {
-      var proximityMult = this.distToTarget/closeEnoughTarget;
+      proximityMult = this.distToTarget/closeEnoughTarget;
       this.vel.mult(0.9);
     } else {
-      var proximityMult = 1;
+      proximityMult = 1;
       this.vel.mult(0.95);
     }
 
     // Steer towards its target.
     if (this.distToTarget > 1) {
-      var steer = new p5.Vector(this.target.x, this.target.y);
+      PVector steer = new PVector(this.target.x, this.target.y);
       steer.sub(this.pos);
       steer.normalize();
-      steer.mult(this.maxSpeed*proximityMult*speedSlider.slider.value());
+      steer.mult(this.maxSpeed*proximityMult*speedSlider);
       this.acc.add(steer);
     }
 
-    var mouseDist = dist(this.pos.x, this.pos.y, mouseX, mouseY);
+    float mouseDist = dist(this.pos.x, this.pos.y, mouseX, mouseY);
 
     // Interact with mouse.
-    if (mouseDist < mouseSizeSlider.slider.value()) {
-      if (mouseIsPressed) {
+    if (mouseDist < mouseSizeSlider) {
+      PVector push;
+      if (mousePressed) {
         // Push towards mouse.
-        var push = new p5.Vector(mouseX, mouseY);
-        push.sub(new p5.Vector(this.pos.x, this.pos.y));
+        push = new PVector(mouseX, mouseY);
+        push.sub(new PVector(this.pos.x, this.pos.y));
       } else {
         // Push away from mouse.
-        var push = new p5.Vector(this.pos.x, this.pos.y);
-        push.sub(new p5.Vector(mouseX, mouseY));
+        push = new PVector(this.pos.x, this.pos.y);
+        push.sub(new PVector(mouseX, mouseY));
       }
       push.normalize();
-      push.mult((mouseSizeSlider.slider.value()-mouseDist)*0.05);
+      push.mult((mouseSizeSlider-mouseDist)*0.05);
       this.acc.add(push);
     }
 
     // Move it.
     this.vel.add(this.acc);
-    this.vel.limit(this.maxForce*speedSlider.slider.value());
+    this.vel.limit(this.maxForce*speedSlider);
     this.pos.add(this.vel);
     this.acc.mult(0);
   }
 
-  this.draw = function() {
+  void draw() {
     this.currentColor = lerpColor(this.currentColor, this.endColor, this.colorBlendRate);
     stroke(this.currentColor);
 
+    float targetSize;
     if (! this.isKilled) {
       // Size is bigger the closer it is to its target.
-      var targetSize = map(min(this.distToTarget, closeEnoughTarget), 
+      targetSize = map(min(this.distToTarget, closeEnoughTarget), 
         closeEnoughTarget, 0, 
-        0, particleSizeSlider.slider.value());
+        0, particleSizeSlider);
     } else {
-      var targetSize = 2;
+      targetSize = 2;
     }
 
     this.currentSize = lerp(this.currentSize, targetSize, 0.1);
@@ -89,7 +96,7 @@ function Particle(x, y) {
     point(this.pos.x, this.pos.y);
   }
 
-  this.kill = function() {
+  void kill() {
     if (! this.isKilled) {
       this.target = generateRandomPos(width/2, height/2, max(width, height));
       this.endColor = color(0);
@@ -97,8 +104,8 @@ function Particle(x, y) {
     }
   }
 
-  this.isOutOfBounds = function() {
+  boolean isOutOfBounds() {
     return (this.pos.x < 0 || this.pos.x > width || 
-      this.pos.y < 0 || this.pos.y > height)
+      this.pos.y < 0 || this.pos.y > height);
   }
 }

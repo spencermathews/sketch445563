@@ -1,6 +1,8 @@
 /*
 Particles to image
  
+ Converted from p5.js to Processing by Spencer Mathews
+ 
  Particles seek a target to make up an image. 
  They get bigger the closer they get to their target.
  
@@ -17,74 +19,74 @@ Particles to image
  jasonlabbe3d.com
  */
 
-var imgs = [];
-var imgNames = ["image1.jpg", "image2.jpg", "image3.jpg"];
-var imgIndex = -1;
+PImage[] imgs = new PImage[0];
+String[] imgNames = {"image1.jpg", "image2.jpg", "image3.jpg"};
+int imgIndex = -1;
 
-var loadPercentage = 0.045; // 0 to 1.0
-var closeEnoughTarget = 50;
+float loadPercentage = 0.045; // 0 to 1.0
+float closeEnoughTarget = 50;
 
-var allParticles = [];
+ArrayList<Particle> allParticles = new ArrayList<Particle>();
 
-var mouseSizeSlider;
-var particleSizeSlider;
-var speedSlider;
-var resSlider;
-var nextImageButton;
+// Used by Particle
+// TODO convert back into sliders
+float mouseSizeSlider = 100;
+float particleSizeSlider = 8;
+float speedSlider = 1;
+// Used by nextImage
+float resSlider = 1;
+//var nextImageButton;
 
 
-function preload() {
+void setup() {
+  size(500, 500);
+
+  //// Create on-screen controls.
+  //mouseSizeSlider = new SliderLayout("Mouse size", 50, 200, 100, 1, 100, 100);
+
+  //particleSizeSlider = new SliderLayout("Particle size", 1, 20, 8, 1, 100, mouseSizeSlider.slider.position().y+70);
+
+  //speedSlider = new SliderLayout("Speed", 0, 5, 1, 0.5, 100, particleSizeSlider.slider.position().y+70);
+
+  //resSlider = new SliderLayout("Count multiplier (on next image)", 0.1, 2, 1, 0.1, 100, speedSlider.slider.position().y+70);
+
+  //nextImageButton = createButton("Next image");
+  //nextImageButton.position(100, resSlider.slider.position().y+40);
+  //nextImageButton.mousePressed(nextImage);
+
   // Pre-load all images.
-  for (var i = 0; i < imgNames.length; i++) {
-    var newImg = loadImage(imgNames[i]);
-    imgs.push(newImg);
+  for (int i = 0; i < imgNames.length; i++) {
+    PImage newImg = loadImage(imgNames[i]);
+    imgs = (PImage[])append(imgs, newImg);
   }
-}
-
-
-function setup() {
-  createCanvas(windowWidth, windowHeight);
-
-  // Create on-screen controls.
-  mouseSizeSlider = new SliderLayout("Mouse size", 50, 200, 100, 1, 100, 100);
-
-  particleSizeSlider = new SliderLayout("Particle size", 1, 20, 8, 1, 100, mouseSizeSlider.slider.position().y+70);
-
-  speedSlider = new SliderLayout("Speed", 0, 5, 1, 0.5, 100, particleSizeSlider.slider.position().y+70);
-
-  resSlider = new SliderLayout("Count multiplier (on next image)", 0.1, 2, 1, 0.1, 100, speedSlider.slider.position().y+70);
-
-  nextImageButton = createButton("Next image");
-  nextImageButton.position(100, resSlider.slider.position().y+40);
-  nextImageButton.mousePressed(nextImage);
 
   // Change to first image.
   nextImage();
 }
 
 
-function draw() {
+void draw() {
   background(255);
 
-  for (var i = allParticles.length-1; i > -1; i--) {
-    allParticles[i].move();
-    allParticles[i].draw();
+  for (int i = allParticles.size()-1; i > -1; i--) {
+    allParticles.get(i).move();
+    allParticles.get(i).draw();
 
-    if (allParticles[i].isKilled) {
-      if (allParticles[i].isOutOfBounds()) {
-        allParticles.splice(i, 1);
+    if (allParticles.get(i).isKilled) {
+      if (allParticles.get(i).isOutOfBounds()) {
+        allParticles.remove(i);
       }
     }
   }
 
-  // Display slider labels.
-  mouseSizeSlider.display();
-  particleSizeSlider.display();
-  speedSlider.display();
-  resSlider.display();
+  //// Display slider labels.
+  //mouseSizeSlider.display();
+  //particleSizeSlider.display();
+  //speedSlider.display();
+  //resSlider.display();
 }
 
 
-function keyPressed() {
+void keyPressed() {
   nextImage();
 }

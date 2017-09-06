@@ -5,12 +5,12 @@
  @param {number} mag
  @return {p5.Vector}
  */
-function generateRandomPos(x, y, mag) {
-  var pos = new p5.Vector(x, y);
+PVector generateRandomPos(float x, float y, float mag) {
+  PVector pos = new PVector(x, y);
 
-  var randomDirection = new p5.Vector(random(width), random(height));
+  PVector randomDirection = new PVector(random(width), random(height));
 
-  var vel = p5.Vector.sub(randomDirection, pos);
+  PVector vel = PVector.sub(randomDirection, pos);
   vel.normalize();
   vel.mult(mag);
   pos.add(vel);
@@ -22,7 +22,7 @@ function generateRandomPos(x, y, mag) {
 /**
  Dynamically adds/removes particles to make up the next image.
  */
-function nextImage() {
+void nextImage() {
   // Switch index to next image.
   imgIndex++;
   if (imgIndex > imgs.length-1) {
@@ -31,39 +31,38 @@ function nextImage() {
   imgs[imgIndex].loadPixels();
 
   // Create an array of indexes from particle array.
-  var particleIndexes = [];
-  for (var i = 0; i < allParticles.length; i++) {
-    particleIndexes.push(i);
+  ArrayList<Integer> particleIndexes = new ArrayList<Integer>();
+  for (int i = 0; i < allParticles.size(); i++) {
+    particleIndexes.add(i);
   }
 
-  var pixelIndex = 0;
+  int pixelIndex = 0;
 
   // Go through each pixel of the image.
-  for (var y = 0; y < imgs[imgIndex].height; y++) {
-    for (var x = 0; x < imgs[imgIndex].width; x++) {
+  for (int y = 0; y < imgs[imgIndex].height; y++) {
+    for (int x = 0; x < imgs[imgIndex].width; x++) {
       // Get the pixel's color.
-      var pixelR = imgs[imgIndex].pixels[pixelIndex];
-      var pixelG = imgs[imgIndex].pixels[pixelIndex+1];
-      var pixelB = imgs[imgIndex].pixels[pixelIndex+2];
-      var pixelA = imgs[imgIndex].pixels[pixelIndex+3];
+      color pixel = imgs[imgIndex].pixels[pixelIndex];
 
-      pixelIndex += 4;
+      pixelIndex += 1;
 
       // Give it small odds that we'll assign a particle to this pixel.
-      if (random(1.0) > loadPercentage*resSlider.slider.value()) {
+      if (random(1.0) > loadPercentage*resSlider) {
         continue;
       }
 
-      var pixelColor = color(pixelR, pixelG, pixelB);
+      color pixelColor = pixel;
 
-      if (particleIndexes.length > 0) {
+      Particle newParticle;
+      if (particleIndexes.size() > 0) {
         // Re-use existing particle.
-        var index = particleIndexes.splice(random(particleIndexes.length-1), 1);
-        var newParticle = allParticles[index];
+        // JS Array splice can handle non-int params it seems, but ArrayList.remove fails, also was originally length-1
+        int index = particleIndexes.remove(int(random(particleIndexes.size())));
+        newParticle = allParticles.get(index);
       } else {
         // Create a new particle.
-        var newParticle = new Particle(width/2, height/2);
-        allParticles.push(newParticle);
+        newParticle = new Particle(width/2, height/2);
+        allParticles.add(newParticle);
       }
 
       newParticle.target.x = x+width/2-imgs[imgIndex].width/2;
@@ -73,9 +72,9 @@ function nextImage() {
   }
 
   // Kill off any left over particles that aren't assigned to anything.
-  if (particleIndexes.length > 0) {
-    for (var i = 0; i < particleIndexes.length; i++) {
-      allParticles[particleIndexes[i]].kill();
+  if (particleIndexes.size() > 0) {
+    for (int i = 0; i < particleIndexes.size(); i++) {
+      allParticles.get(particleIndexes.get(i)).kill();
     }
   }
 }
