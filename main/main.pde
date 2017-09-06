@@ -7,8 +7,6 @@ Particles to image
  They get bigger the closer they get to their target.
  
  Controls:
- - Move the mouse to interact.
- - Hold down the mouse button pull particles in.
  - Press any key to change to the next image.
  - Use the on-screen controls to change settings.
  
@@ -30,7 +28,6 @@ ArrayList<Particle> allParticles = new ArrayList<Particle>();
 
 // Used by Particle
 // TODO convert back into sliders
-float mouseSizeSlider = 100;
 float particleSizeSlider = 8;
 float speedSlider = 1;
 // Used by nextImage

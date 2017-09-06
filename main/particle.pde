@@ -50,25 +50,6 @@ class Particle {
       this.acc.add(steer);
     }
 
-    float mouseDist = dist(this.pos.x, this.pos.y, mouseX, mouseY);
-
-    // Interact with mouse.
-    if (mouseDist < mouseSizeSlider) {
-      PVector push;
-      if (mousePressed) {
-        // Push towards mouse.
-        push = new PVector(mouseX, mouseY);
-        push.sub(new PVector(this.pos.x, this.pos.y));
-      } else {
-        // Push away from mouse.
-        push = new PVector(this.pos.x, this.pos.y);
-        push.sub(new PVector(mouseX, mouseY));
-      }
-      push.normalize();
-      push.mult((mouseSizeSlider-mouseDist)*0.05);
-      this.acc.add(push);
-    }
-
     // Move it.
     this.vel.add(this.acc);
     this.vel.limit(this.maxForce*speedSlider);
