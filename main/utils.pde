@@ -77,4 +77,5 @@ void nextImage() {
       allParticles.get(particleIndexes.get(i)).kill();
     }
   }
+  println("Particles:", allParticles.size(), "Left over:", particleIndexes.size());
 }

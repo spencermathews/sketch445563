@@ -84,6 +84,8 @@ void draw() {
   //particleSizeSlider.display();
   //speedSlider.display();
   //resSlider.display();
+
+  surface.setTitle(int(frameRate) + " fps");
 }
 
 
