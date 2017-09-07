@@ -42,7 +42,7 @@ class Particle {
     }
 
     // Steer towards its target.
-    if (this.distToTarget > 1) {
+    if (this.distToTarget > 0) {
       PVector steer = new PVector(this.target.x, this.target.y);
       steer.sub(this.pos);
       steer.normalize();
