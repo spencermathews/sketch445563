@@ -21,14 +21,14 @@ PImage[] imgs = new PImage[0];
 String[] imgNames = {"image1.jpg", "image2.jpg", "image3.jpg"};
 int imgIndex = -1;
 
-float loadPercentage = 0.045; // 0 to 1.0
+float loadPercentage = 1.0; // 0 to 1.0, originally 0.045
 float closeEnoughTarget = 50;
 
 ArrayList<Particle> allParticles = new ArrayList<Particle>();
 
 // Used by Particle
 // TODO convert back into sliders
-float particleSizeSlider = 8;
+float particleSizeSlider = 1; // originally 8
 float speedSlider = 1;
 // Used by nextImage
 float resSlider = 1;
@@ -36,7 +36,7 @@ float resSlider = 1;
 
 
 void setup() {
-  size(500, 500);
+  size(500, 500, FX2D);
 
   //// Create on-screen controls.
   //mouseSizeSlider = new SliderLayout("Mouse size", 50, 200, 100, 1, 100, 100);
