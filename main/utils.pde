@@ -68,6 +68,7 @@ void nextImage() {
       newParticle.target.x = x+width/2-imgs[imgIndex].width/2;
       newParticle.target.y = y+height/2-imgs[imgIndex].height/2;
       newParticle.endColor = pixelColor;
+      newParticle.currentSize = particleSizeSlider;
     }
   }
 

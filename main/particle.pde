@@ -61,17 +61,6 @@ class Particle {
     this.currentColor = lerpColor(this.currentColor, this.endColor, this.colorBlendRate);
     stroke(this.currentColor);
 
-    float targetSize;
-    if (! this.isKilled) {
-      // Size is bigger the closer it is to its target.
-      targetSize = map(min(this.distToTarget, closeEnoughTarget), 
-        closeEnoughTarget, 0, 
-        0, particleSizeSlider);
-    } else {
-      targetSize = 2;
-    }
-
-    this.currentSize = lerp(this.currentSize, targetSize, 0.1);
     strokeWeight(this.currentSize);
 
     point(this.pos.x, this.pos.y);
