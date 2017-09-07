@@ -18,7 +18,7 @@ Particles to image
  */
 
 PImage[] imgs = new PImage[0];
-String[] imgNames = {"image1.jpg", "image2.jpg", "image3.jpg"};
+String[] imgNames = {"Chavez-gloves.png", "Chavez-Chavez.png", "Chavez-name.png"};
 int imgIndex = -1;
 
 float loadPercentage = 1.0; // 0 to 1.0, originally 0.045
@@ -36,7 +36,7 @@ float resSlider = 1;
 
 
 void setup() {
-  size(500, 500, FX2D);
+  size(960, 540, FX2D);
 
   //// Create on-screen controls.
   //mouseSizeSlider = new SliderLayout("Mouse size", 50, 200, 100, 1, 100, 100);
@@ -54,6 +54,8 @@ void setup() {
   // Pre-load all images.
   for (int i = 0; i < imgNames.length; i++) {
     PImage newImg = loadImage(imgNames[i]);
+    float scaleImg = 2;
+    newImg.resize(floor(newImg.width/scaleImg), 0);
     imgs = (PImage[])append(imgs, newImg);
   }
 
