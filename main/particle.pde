@@ -46,6 +46,7 @@ class Particle {
       steer.sub(this.pos);
       steer.normalize();
       steer.mult(this.maxSpeed*proximityMult*speedSlider);
+      steer.rotate(random(-1, 1)); // add a little directional randomness 
       this.acc.add(steer);
     }
 
