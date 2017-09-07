@@ -46,8 +46,8 @@ void nextImage() {
 
       pixelIndex += 1;
 
-      // Give it small odds that we'll assign a particle to this pixel.
-      if (random(1.0) > loadPercentage*resSlider) {
+      // Do not assign a particle to this pixel under some conditions
+      if (random(1.0) > loadPercentage*resSlider || brightness(pixel) > brightnessThreshold) {
         continue;
       }
 

@@ -34,6 +34,8 @@ float speedSlider = 1;
 float resSlider = 1;
 //var nextImageButton;
 
+float brightnessThreshold = 254; // do no create particles from pixels lighter than this
+
 
 void setup() {
   size(960, 540, FX2D);
