@@ -86,6 +86,10 @@ void draw() {
   //speedSlider.display();
   //resSlider.display();
 
+  if (mousePressed) {
+    image(imgs[imgIndex], 0, 0);
+  }
+
   surface.setTitle(int(frameRate) + " fps");
 }
 
