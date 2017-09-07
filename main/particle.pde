@@ -15,7 +15,6 @@ class Particle {
   float maxForce = random(8, 15); // Its speed limit.
 
   color currentColor = color(0);
-  color endColor = color(0);
   float colorBlendRate = random(0.01, 0.05);
 
   float currentSize = 0;
@@ -58,7 +57,6 @@ class Particle {
   }
 
   void draw() {
-    this.currentColor = lerpColor(this.currentColor, this.endColor, this.colorBlendRate);
     stroke(this.currentColor);
 
     strokeWeight(this.currentSize);
@@ -69,7 +67,6 @@ class Particle {
   void kill() {
     if (! this.isKilled) {
       this.target = generateRandomPos(width/2, height/2, max(width, height));
-      this.endColor = color(0);
       this.isKilled = true;
     }
   }
