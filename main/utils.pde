@@ -61,7 +61,7 @@ void nextImage() {
         newParticle = allParticles.get(index);
       } else {
         // Create a new particle.
-        newParticle = new Particle(width/2, height/2);
+        newParticle = new Particle(random(width), height-1);
         allParticles.add(newParticle);
       }
 
